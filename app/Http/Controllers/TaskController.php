@@ -13,7 +13,8 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::where('status', false)->get();
+        $user = \Auth::user();
+        $tasks = Task::where('status', false)->where('user_id', $user['id'])->get();
         return view('tasks.index', compact('tasks'));
     }
 
@@ -36,8 +37,11 @@ class TaskController extends Controller
         $messages = ['required' => '必須項目です', 'max' => '100文字以下にしてください。'];
         Validator::make($request->all(), $rules, $messages)->validate();
 
+        $user = \Auth::user();
         $task = new Task;
         $task->name = $request->input('task_name');
+        $task->user_id = $user['id'];
+    
         $task->save();
         return redirect('/tasks');
     }
