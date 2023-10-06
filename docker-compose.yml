@@ -109,4 +109,3 @@ volumes:
         driver: local
     sail-meilisearch:
         driver: local
-agddsag
